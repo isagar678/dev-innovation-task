@@ -1,69 +1,63 @@
-# React + TypeScript + Vite
+# Personal Notes & Bookmark Manager Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for the Personal Notes & Bookmark Manager app, built with React (Vite), Tailwind CSS, and shadcn/ui.
 
-Currently, two official plugins are available:
+## Features
+- Minimalist UI for notes and bookmarks
+- User authentication (JWT)
+- Tag filtering, search, and favorites
+- Responsive and accessible design
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
+- Node.js (v14+ recommended)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Installation
+1. Clone the repository or copy the frontend folder.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the frontend directory:
+   ```env
+   VITE_API_URL=https://dev-innovation-task.vercel.app
+   ```
+4. Start the dev server:
+   ```bash
+   npm run dev
+   ```
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Deployment (Vercel)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Common Build Errors & Fixes
+If you see errors like:
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Cannot find module 'react-router-dom' or its corresponding type declarations.
+Cannot find module 'react-icons/fa' or its corresponding type declarations.
 ```
+**Do the following:**
+1. Make sure these dependencies are in your `package.json`:
+   ```json
+   "dependencies": {
+     "react-router-dom": "^6.x.x",
+     "react-icons": "^4.x.x"
+   }
+   ```
+   If not, run:
+   ```bash
+   npm install react-router-dom react-icons
+   ```
+2. (Optional, for TypeScript):
+   ```bash
+   npm install -D @types/react-router-dom
+   ```
+3. Commit and push both `package.json` and `package-lock.json`.
+4. Redeploy on Vercel.
+5. If the error persists, go to the Vercel dashboard, select your project, and use "Redeploy" with "Clear build cache".
+
+## Environment Variables
+- `VITE_API_URL` — The base URL for your backend API (e.g., https://dev-innovation-task.vercel.app)
+
+## License
+MIT
