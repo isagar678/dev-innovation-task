@@ -18,6 +18,7 @@ exports.register = async (req, res) => {
     // Always send a JSON response
     res.status(201).json({ message: 'User registered.' });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: 'Server error.' });
   }
 };
@@ -39,6 +40,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: '7d' });
     res.json({ token });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: 'Server error.' });
   }
 }; 
