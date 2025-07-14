@@ -6,9 +6,12 @@ const { isWebUri } = require('valid-url');
 async function fetchTitleFromUrl(url) {
   try {
     const response = await axios.get(url);
+
     const match = response.data.match(/<title>(.*?)<\/title>/i);
+
     return match ? match[1] : '';
-  } catch {
+  } catch (err) {
+    console.error('Error fetching title for', url, err.message);
     return '';
   }
 }
@@ -47,9 +50,10 @@ exports.getBookmarks = async (req, res) => {
       ];
     }
     if (tags) {
-      const tagArr = tags.split(',');
-      filter.tags = { $in: tagArr };
+      const tagArr = tags.split(',').map(t => t.trim()).filter(Boolean);
+      filter.tags = { $elemMatch: { $regex: tagArr.join('|'), $options: 'i' } };
     }
+    if (req.query.favorite === 'true') filter.favorite = true;
     const bookmarks = await Bookmark.find(filter).sort({ updatedAt: -1 });
     res.json(bookmarks);
   } catch (err) {
@@ -99,6 +103,19 @@ exports.deleteBookmark = async (req, res) => {
     const bookmark = await Bookmark.findOneAndDelete({ _id: req.params.id, user: req.user.userId });
     if (!bookmark) return res.status(404).json({ error: 'Bookmark not found.' });
     res.json({ message: 'Bookmark deleted.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error.' });
+  }
+};
+
+// Toggle favorite status
+exports.toggleFavorite = async (req, res) => {
+  try {
+    const bookmark = await Bookmark.findOne({ _id: req.params.id, user: req.user.userId });
+    if (!bookmark) return res.status(404).json({ error: 'Bookmark not found.' });
+    bookmark.favorite = !bookmark.favorite;
+    await bookmark.save();
+    res.json(bookmark);
   } catch (err) {
     res.status(500).json({ error: 'Server error.' });
   }

@@ -8,5 +8,6 @@ router.get('/', auth, noteController.getNotes);
 router.get('/:id', auth, noteController.getNoteById);
 router.put('/:id', auth, noteController.updateNote);
 router.delete('/:id', auth, noteController.deleteNote);
+router.patch('/:id/favorite', auth, noteController.toggleFavorite);
 
 module.exports = router; 

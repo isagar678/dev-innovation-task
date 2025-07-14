@@ -27,9 +27,10 @@ exports.getNotes = async (req, res) => {
       ];
     }
     if (tags) {
-      const tagArr = tags.split(',');
-      filter.tags = { $in: tagArr };
+      const tagArr = tags.split(',').map(t => t.trim()).filter(Boolean);
+      filter.tags = { $elemMatch: { $regex: tagArr.join('|'), $options: 'i' } };
     }
+    if (req.query.favorite === 'true') filter.favorite = true;
     const notes = await Note.find(filter).sort({ updatedAt: -1 });
     res.json(notes);
   } catch (err) {
@@ -73,6 +74,19 @@ exports.deleteNote = async (req, res) => {
     const note = await Note.findOneAndDelete({ _id: req.params.id, user: req.user.userId });
     if (!note) return res.status(404).json({ error: 'Note not found.' });
     res.json({ message: 'Note deleted.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error.' });
+  }
+};
+
+// Toggle favorite status
+exports.toggleFavorite = async (req, res) => {
+  try {
+    const note = await Note.findOne({ _id: req.params.id, user: req.user.userId });
+    if (!note) return res.status(404).json({ error: 'Note not found.' });
+    note.favorite = !note.favorite;
+    await note.save();
+    res.json(note);
   } catch (err) {
     res.status(500).json({ error: 'Server error.' });
   }

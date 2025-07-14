@@ -15,6 +15,7 @@ exports.register = async (req, res) => {
     }
     const user = new User({ username, password });
     await user.save();
+    // Always send a JSON response
     res.status(201).json({ message: 'User registered.' });
   } catch (err) {
     res.status(500).json({ error: 'Server error.' });

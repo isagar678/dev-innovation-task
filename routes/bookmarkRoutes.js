@@ -8,5 +8,6 @@ router.get('/', auth, bookmarkController.getBookmarks);
 router.get('/:id', auth, bookmarkController.getBookmarkById);
 router.put('/:id', auth, bookmarkController.updateBookmark);
 router.delete('/:id', auth, bookmarkController.deleteBookmark);
+router.patch('/:id/favorite', auth, bookmarkController.toggleFavorite);
 
 module.exports = router; 
