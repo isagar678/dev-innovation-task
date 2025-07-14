@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import NoteForm from './NoteForm';
 import { useAuth } from '../AuthContext';
 import { useToast } from './Toast';
@@ -195,40 +195,40 @@ const NotesPage = () => {
         {notes
           .filter(note => !showFavorites || note.favorite)
           .map(note => (
-          <div key={note._id} className="border rounded p-4 bg-white shadow">
-            <div className="flex items-center justify-between mb-1">
-              <div className="font-semibold text-lg">{note.title}</div>
-              <button
-                className="ml-2 text-yellow-500 hover:text-yellow-600"
-                aria-label={note.favorite ? 'Unmark as favorite' : 'Mark as favorite'}
-                onClick={() => handleToggleFavorite(note._id)}
-                title={note.favorite ? 'Unmark as favorite' : 'Mark as favorite'}
-              >
-                {note.favorite ? <FaStar /> : <FaRegStar />}
-              </button>
+            <div key={note._id} className="border rounded p-4 bg-white shadow">
+              <div className="flex items-center justify-between mb-1">
+                <div className="font-semibold text-lg">{note.title}</div>
+                <button
+                  className="ml-2 text-yellow-500 hover:text-yellow-600"
+                  aria-label={note.favorite ? 'Unmark as favorite' : 'Mark as favorite'}
+                  onClick={() => handleToggleFavorite(note._id)}
+                  title={note.favorite ? 'Unmark as favorite' : 'Mark as favorite'}
+                >
+                  {note.favorite ? <FaStar /> : <FaRegStar />}
+                </button>
+              </div>
+              <div className="text-gray-700 mb-2">{note.content}</div>
+              <div className="flex gap-2 text-xs text-gray-500 mb-2">
+                {note.tags.map(t => (
+                  <span key={t} className="bg-gray-100 px-2 py-0.5 rounded">#{t}</span>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className="px-3 py-1 text-xs bg-gray-200 rounded hover:bg-gray-300"
+                  onClick={() => handleEdit(note)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="px-3 py-1 text-xs bg-red-200 text-red-800 rounded hover:bg-red-300"
+                  onClick={() => handleDelete(note._id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-            <div className="text-gray-700 mb-2">{note.content}</div>
-            <div className="flex gap-2 text-xs text-gray-500 mb-2">
-              {note.tags.map(t => (
-                <span key={t} className="bg-gray-100 px-2 py-0.5 rounded">#{t}</span>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <button
-                className="px-3 py-1 text-xs bg-gray-200 rounded hover:bg-gray-300"
-                onClick={() => handleEdit(note)}
-              >
-                Edit
-              </button>
-              <button
-                className="px-3 py-1 text-xs bg-red-200 text-red-800 rounded hover:bg-red-300"
-                onClick={() => handleDelete(note._id)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
       {/* Add/Edit Note Modal */}
       {showForm && (

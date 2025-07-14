@@ -117,13 +117,6 @@ function Register() {
   );
 }
 
-function Notes() {
-  return <div className="flex items-center justify-center min-h-screen">Notes Page</div>;
-}
-function Bookmarks() {
-  return <div className="flex items-center justify-center min-h-screen">Bookmarks Page</div>;
-}
-
 function PrivateRoute({ children }: { children: React.JSX.Element }) {
   const { token } = useAuth();
   const location = useLocation();
